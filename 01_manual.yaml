@@ -1,0 +1,46 @@
+apiVersion: source.toolkit.fluxcd.io/v1beta1
+kind: GitRepository
+metadata:
+  name: hello-world
+spec:
+  interval: 1m0s
+  url: https://github.com/kontinue/hello-world
+  ref:
+    branch: main
+  gitImplementation: libgit2
+  ignore: ""
+---
+apiVersion: kpack.io/v1alpha2
+kind: Image
+metadata:
+  name: hello-world
+spec:
+  tag: gcr.io/fe-ciberkleid/carto-demo/hello-world
+  serviceAccountName: cartographer-example-registry-creds-sa
+  builder:
+    kind: ClusterBuilder
+    name: go-builder
+  source:
+    blob:
+      url: ${NEW_SOURCE}
+  build:
+    env:
+      - name: CGO_ENABLED
+        value: "0"
+---
+apiVersion: serving.knative.dev/v1
+kind: Service
+metadata:
+  name: hello-world
+spec:
+  template:
+    metadata:
+      annotations:
+        autoscaling.knative.dev/minScale: "1"
+    spec:
+      serviceAccountName: cartographer-example-registry-creds-sa
+      containers:
+        - name: workload
+          image: ${NEW_IMAGE}
+          securityContext:
+            runAsUser: 1000
