@@ -1,0 +1,106 @@
+apiVersion: carto.run/v1alpha1
+kind: ClusterSourceTemplate
+metadata:
+  name: source
+spec:
+  urlPath: .status.artifact.url
+  revisionPath: .status.artifact.revision
+
+  template:
+    apiVersion: source.toolkit.fluxcd.io/v1beta1
+    kind: GitRepository
+    metadata:
+      name: hello-world
+    spec:
+      interval: 1m0s
+      url: https://github.com/kontinue/hello-world
+      ref:
+        branch: main
+      gitImplementation: libgit2
+      ignore: ""
+---
+apiVersion: carto.run/v1alpha1
+kind: ClusterImageTemplate
+metadata:
+  name: image
+spec:
+  imagePath: .status.latestImage
+
+  template:
+    apiVersion: kpack.io/v1alpha2
+    kind: Image
+    metadata:
+      name: hello-world
+    spec:
+      tag: gcr.io/fe-ciberkleid/carto-demo/hello-world
+      serviceAccountName: cartographer-example-registry-creds-sa
+      builder:
+        kind: ClusterBuilder
+        name: go-builder
+      source:
+        blob:
+          url: $(sources.source.url)$
+      build:
+        env:
+          - name: CGO_ENABLED
+            value: "0"
+---
+apiVersion: carto.run/v1alpha1
+kind: ClusterTemplate
+metadata:
+  name: app-deploy
+spec:
+  template:
+    apiVersion: kappctrl.k14s.io/v1alpha1
+    kind: App
+    metadata:
+      name: hello-world
+    spec:
+      serviceAccountName: cartographer-example-registry-creds-sa
+      fetch:
+        - inline:
+            paths:
+              manifest.yml: |
+                ---
+                apiVersion: kapp.k14s.io/v1alpha1
+                kind: Config
+                rebaseRules:
+                  - path:
+                      - metadata
+                      - annotations
+                      - serving.knative.dev/creator
+                    type: copy
+                    sources: [new, existing]
+                    resourceMatchers: &matchers
+                      - apiVersionKindMatcher:
+                          apiVersion: serving.knative.dev/v1
+                          kind: Service
+                  - path:
+                      - metadata
+                      - annotations
+                      - serving.knative.dev/lastModifier
+                    type: copy
+                    sources: [new, existing]
+                    resourceMatchers: *matchers
+
+                ---
+                apiVersion: serving.knative.dev/v1
+                kind: Service
+                metadata:
+                  name: hello-world
+                spec:
+                  template:
+                    metadata:
+                      annotations:
+                        autoscaling.knative.dev/minScale: "1"
+                    spec:
+                      serviceAccountName: cartographer-example-registry-creds-sa
+                      containers:
+                        - name: workload
+                          image: $(images.image.image)$
+                          securityContext:
+                            runAsUser: 1000
+      template:
+        - ytt: {}
+      deploy:
+        - kapp: {}
