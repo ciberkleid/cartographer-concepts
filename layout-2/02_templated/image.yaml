@@ -1,0 +1,25 @@
+apiVersion: carto.run/v1alpha1
+kind: ClusterImageTemplate
+metadata:
+  name: image
+spec:
+  imagePath: .status.latestImage
+
+  template:
+    apiVersion: kpack.io/v1alpha2
+    kind: Image
+    metadata:
+      name: hello-world
+    spec:
+      tag: gcr.io/fe-ciberkleid/carto-demo/hello-world
+      serviceAccountName: cartographer-example-registry-creds-sa
+      builder:
+        kind: ClusterBuilder
+        name: go-builder
+      source:
+        blob:
+          url: $(sources.source.url)$
+      build:
+        env:
+          - name: CGO_ENABLED
+            value: "0"

@@ -1,0 +1,17 @@
+apiVersion: kpack.io/v1alpha2
+kind: Image
+metadata:
+  name: hello-world
+spec:
+  tag: gcr.io/fe-ciberkleid/carto-demo/hello-world
+  serviceAccountName: cartographer-example-registry-creds-sa
+  builder:
+    kind: ClusterBuilder
+    name: go-builder
+  source:
+    blob:
+      url: ${NEW_SOURCE}
+  build:
+    env:
+      - name: CGO_ENABLED
+        value: "0"
