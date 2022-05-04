@@ -7,7 +7,7 @@ spec:
   serviceAccountName: cartographer-example-registry-creds-sa
   builder:
     kind: ClusterBuilder
-    name: go-builder
+    name: builder
   source:
     blob:
       url: ${NEW_SOURCE}
