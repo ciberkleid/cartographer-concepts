@@ -8,7 +8,7 @@ spec:
       annotations:
         autoscaling.knative.dev/minScale: "1"
     spec:
-      serviceAccountName: cartographer-example-registry-creds-sa
+      serviceAccountName: example-supply-chain-sa
       containers:
         - name: workload
           image: ${NEW_IMAGE}

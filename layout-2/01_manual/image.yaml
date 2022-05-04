@@ -4,7 +4,7 @@ metadata:
   name: hello-world
 spec:
   tag: gcr.io/fe-ciberkleid/carto-demo/hello-world
-  serviceAccountName: cartographer-example-registry-creds-sa
+  serviceAccountName: example-supply-chain-sa
   builder:
     kind: ClusterBuilder
     name: builder

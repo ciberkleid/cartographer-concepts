@@ -5,7 +5,7 @@ metadata:
   labels:
     app.tanzu.vmware.com/workload-type: web
 spec:
-  serviceAccountName: workload-sa
+  serviceAccountName: default
   source:
     git:
       url: https://github.com/kontinue/hello-world

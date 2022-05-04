@@ -16,10 +16,10 @@ metadata:
   name: hello-world
 spec:
   tag: gcr.io/fe-ciberkleid/carto-demo/hello-world
-  serviceAccountName: cartographer-example-registry-creds-sa
+  serviceAccountName: example-supply-chain-sa
   builder:
     kind: ClusterBuilder
-    name: go-builder
+    name: builder
   source:
     blob:
       url: ${NEW_SOURCE}
@@ -38,7 +38,7 @@ spec:
       annotations:
         autoscaling.knative.dev/minScale: "1"
     spec:
-      serviceAccountName: cartographer-example-registry-creds-sa
+      serviceAccountName: example-supply-chain-sa
       containers:
         - name: workload
           image: ${NEW_IMAGE}

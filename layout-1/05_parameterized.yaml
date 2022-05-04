@@ -36,10 +36,10 @@ spec:
       name: $(workload.metadata.name)$
     spec:
       tag: $(params.image_prefix)$$(workload.metadata.name)$
-      serviceAccountName: cartographer-example-registry-creds-sa
+      serviceAccountName: example-supply-chain-sa
       builder:
         kind: ClusterBuilder
-        name: go-builder
+        name: builder
       source:
         blob:
           url: $(sources.source.url)$
@@ -57,7 +57,7 @@ spec:
     metadata:
       name: $(workload.metadata.name)$
     spec:
-      serviceAccountName: cartographer-example-registry-creds-sa
+      serviceAccountName: example-supply-chain-sa
       fetch:
         - inline:
             paths:
@@ -95,7 +95,7 @@ spec:
                       annotations:
                         autoscaling.knative.dev/minScale: "1"
                     spec:
-                      serviceAccountName: cartographer-example-registry-creds-sa
+                      serviceAccountName: example-supply-chain-sa
                       containers:
                         - name: workload
                           image: $(images.image.image)$
