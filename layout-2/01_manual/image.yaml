@@ -3,7 +3,7 @@ kind: Image
 metadata:
   name: hello-world
 spec:
-  tag: gcr.io/fe-ciberkleid/carto-demo/hello-world
+  tag: harbor.tanzu.coraiberkleid.site/carto-demo/hello-world
   serviceAccountName: example-supply-chain-sa
   builder:
     kind: ClusterBuilder
