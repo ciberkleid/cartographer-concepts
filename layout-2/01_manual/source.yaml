@@ -4,7 +4,7 @@ metadata:
   name: hello-world
 spec:
   interval: 1m0s
-  url: https://github.com/kontinue/hello-world
+  url: https://github.com/ciberkleid/hello-go
   ref:
     branch: main
   gitImplementation: libgit2
