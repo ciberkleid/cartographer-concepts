@@ -33,10 +33,10 @@ spec:
       name: hello-world
     spec:
       tag: harbor.tanzu.coraiberkleid.site/carto-demo/hello-world
-      serviceAccountName: example-supply-chain-sa
+      serviceAccountName: default
       builder:
         kind: ClusterBuilder
-        name: builder
+        name: default
       source:
         blob:
           url: $(sources.source.url)$
@@ -56,7 +56,7 @@ spec:
     metadata:
       name: hello-world
     spec:
-      serviceAccountName: example-supply-chain-sa
+      serviceAccountName: default
       fetch:
         - inline:
             paths:
@@ -94,7 +94,7 @@ spec:
                       annotations:
                         autoscaling.knative.dev/minScale: "1"
                     spec:
-                      serviceAccountName: example-supply-chain-sa
+                      serviceAccountName: default
                       containers:
                         - name: workload
                           image: $(images.image.image)$

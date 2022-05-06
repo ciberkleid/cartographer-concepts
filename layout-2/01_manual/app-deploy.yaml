@@ -8,7 +8,7 @@ spec:
       annotations:
         autoscaling.knative.dev/minScale: "1"
     spec:
-      serviceAccountName: example-supply-chain-sa
+      serviceAccountName: default
       containers:
         - name: workload
           image: ${NEW_IMAGE}

@@ -16,10 +16,10 @@ spec:
       name: $(workload.metadata.name)$
     spec:
       tag: $(params.image_prefix)$$(workload.metadata.name)$
-      serviceAccountName: example-supply-chain-sa
+      serviceAccountName: default
       builder:
         kind: ClusterBuilder
-        name: builder
+        name: default
       source:
         blob:
           url: $(sources.source.url)$
