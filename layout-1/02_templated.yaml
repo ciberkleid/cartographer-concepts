@@ -16,7 +16,6 @@ spec:
       url: https://github.com/kontinue/hello-world
       ref:
         branch: main
-      gitImplementation: libgit2
       ignore: ""
 ---
 apiVersion: carto.run/v1alpha1

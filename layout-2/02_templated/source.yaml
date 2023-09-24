@@ -16,5 +16,4 @@ spec:
       url: https://github.com/ciberkleid/hello-go
       ref:
         branch: main
-      gitImplementation: libgit2
       ignore: ""
