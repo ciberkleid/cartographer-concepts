@@ -11,11 +11,11 @@ spec:
     metadata:
       name: hello-world
     spec:
-      tag: harbor.tanzu.coraiberkleid.site/carto-demo/hello-world
-      serviceAccountName: default
+      tag: gcr.io/fe-ciberkleid/carto-demo/hello-world
+      serviceAccountName: cartographer-example-registry-creds-sa
       builder:
         kind: ClusterBuilder
-        name: default
+        name: go-builder
       source:
         blob:
           url: $(sources.source.url)$
